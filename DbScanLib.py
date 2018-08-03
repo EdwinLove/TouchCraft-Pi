@@ -10,12 +10,11 @@ from Objects import Cluster
 
 class DbScanLib:
 
-    def __init__(self, input, output):
+    def __init__(self, input, outputs = []):
         self.Input  = input
-        self.output  = output
+        self.outputs  = outputs
 
     def convertToClusters(self, points):
-        print (points)
         clusters = {}
         for index, clusterNum in enumerate(MyDBSCAN(points, 1.5, 3)):
             if clusterNum == -1:
@@ -55,28 +54,39 @@ class DbScanLib:
 
         return []
 
+    def output(self, cluster):
+        for output in self.outputs:
+            output.outputCluster(cluster)
+            
+        if (cluster):
+            return cluster.toString()
+            
+        return 'null'
+
     def scan(self):
         while(True):
             clusters = self.filterClusters(self.convertToClusters(self.Input.getCoords()), 1)
-            output = ''
+            outputString = ''
             if 0 == len(clusters):
-                self.output.setVolumes([0, 0, 0, 0])
-                output = 'null'
+                outputString = self.output(False)
             else:
                 for cluster in clusters:
-                    self.output.playSoundForCluster(cluster)
-                    output += cluster.toString() +'; '
-            if '' != output:
-                print(output)
-    
-#Input = Input.InputFromSerial()
-Input = Input.SimulatedInput()
-Output = Output.OutputMixSamples([
-    'sounds/giggle.wav',
-    'sounds/ahem.wav',
-    'sounds/baby.wav',
-    'sounds/arrow.wav'
-], 8)
+                    outputString += self.output(cluster) +'; '
 
-MyDbScanLib = DbScanLib(Input, Output)
+            if '' != outputString:
+                print(outputString)
+
+#            time.sleep(0.2)
+    
+Input = Input.InputFromSerial(16)
+#Input = Input.TestInput(16)
+#Input = Input.SimulatedInput()
+Output = Output.OutputMixSamples([
+    'sounds/birdsong.wav',
+    'sounds/bowls.wav',
+    'sounds/harp.wav',
+    'sounds/soul-clap.wav.wav'
+], 16)
+
+MyDbScanLib = DbScanLib(Input, [Output])
 MyDbScanLib.scan()

@@ -25,6 +25,7 @@ class Cluster:
 
     def output(self):
         if 0 == len(self.points):
+            
             return ''
     
         xPoints = list(map(lambda point: point.x, self.points))
@@ -46,3 +47,15 @@ class Cluster:
     def toString(self):
         dictionary = self.output()
         return '[x:' + str(dictionary['x']) + ',y:' + str(dictionary['y']) + ',radius:' + str(dictionary['radius']) + ',maxValue:' + str(dictionary['maxValue']) + ']'
+
+
+class SerialClass:
+    def getSerial(self, name, baudRate):
+        ports = list(port_list.comports())
+        for port_no, description, address in ports:
+            print(port_no)
+            print(description)
+            print(address)
+
+            if name in description:
+                serial.Serial(port_no, baudRate)

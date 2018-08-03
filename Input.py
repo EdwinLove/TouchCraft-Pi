@@ -2,125 +2,120 @@ import serial
 import serial.tools.list_ports as port_list
 from Objects import Point
 
-class InputFromSerial:
-    def __init__(self):
-        self.touchThreshold = 50
+class AbstractInput():
+    def __init__(self, dim):
+        self.dim = dim
+        self.touchThreshold = 10
 
-        ports = list(port_list.comports())
-        for port_no, description, address in ports:
-            if 'USB-SERIAL' in description:
-                self.ser = serial.Serial(port_no, 230400)
-        
-
-    def getPoints():
-        y = 0
+    def getPoints(self):
         points = {}
-        while y < 16:
-            line = self.ser.readline().decode()
-            print(line)
-            for x, point in enumerate(line.split(',')):
-                if (False == isinstance(point, str)):
-                    continue
-                clean = point.rstrip(';\r\n')
-                if '' == clean or '.' == clean:
-                    continue
-                value = int(clean)
+        for y, line in enumerate(self.getPointsSet()):
+            for x, value in enumerate(line):
                 if value > self.touchThreshold:
                     points[str(x) + ':' + str(y)] = Point(x, y, value)
-            y+=1
 
         return points
 
     def getCoords(self):
-        y = 0
-        points = []
-        while y < 16:
-            line = self.ser.readline().decode()
-            print(line)
-            for x, point in enumerate(line.split(',')):
-                if (False == isinstance(point, str)):
-                    continue
-                clean = point.rstrip(';\r\n')
-                if ';' in clean:
-                    clean = clean.split(';', 1)[0]
-                if '.' in clean:
-                    clean = clean.split('.', 1)[0]
-                if '' == clean or '.' == clean:
-                    continue
-                value = int(clean)
-                if value > 10:
-                    points.append([x-8, y-8, value])
-            y+=1
-            
-        return points
+        coords = []
+        for y, line in enumerate(self.getPointsSet()):
+            for x, value in enumerate(line):
+                if value > self.touchThreshold:
+                    coords.append([x, y, value])
 
-    def getCoords(self):
-        y = 0
-        points = []
+        return coords
+
+
+class InputFromSerial(AbstractInput):
+    def __init__(self, dim):
+        AbstractInput.__init__(self, dim)
+        self.ser = self.getSerial('USB-SERIAL', 230400)
+
+    def getSerial(self, name, baudRate):
+        ports = list(port_list.comports())
+        for port_no, description, address in ports:
+            print(port_no)
+            print(description)
+            print(address)
+
+            if name in description:
+                return serial.Serial(port_no, baudRate)
+
+    def getPointsSet(self):
+        lines = []
         while True:
             line = self.ser.readline().decode().rstrip(';\r\n')
             if '.' == line:
-                return points
-            print(line)
-            for x, point in enumerate(line.split(',')):
-                if (False == isinstance(point, str)):
-                    continue
-                clean = point.rstrip(';\r\n')
-                if ';' in clean:
-                    clean = clean.split(';', 1)[0]
-                if '.' in clean:
-                    clean = clean.split('.', 1)[0]
-                if '' == clean or '.' == clean:
-                    continue
-                value = int(clean)
-                if value > 10:
-                    points.append([x-8, y-8, value])
-            y+=1
-            
-        return points
+                if len(lines) == self.dim:
+                    return lines
 
+                lines = []
+            else:
+                thisLine = []
+                for x, point in enumerate(line.split(',')):
+                    thisLine.append(self.cleanPoint(point))
 
-class SimulatedInput:
-    def __init__(self):
-        self.input = [
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 4, 4, 2, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 4, 4, 2, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 8, 4, 2, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 9, 9, 6, 4, 2],
-                [0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 7, 8, 5, 8, 3, 0],
-                [0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 7, 9, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                if len(thisLine) == self.dim:
+                    lines.append(thisLine)
+
+    def cleanPoint(self, point):
+        if (False == isinstance(point, str)):
+            return 0
+        clean = point.rstrip(';\r\n')
+        if ';' in clean:
+            clean = clean.split(';', 1)[0]
+        if '.' in clean:
+            clean = clean.split('.', 1)[0]
+        if '' == clean or '.' == clean:
+            return 0
+        
+        return int(clean)
+
+class SimulatedInput(AbstractInput):
+    def getPointsSet(self):
+        return [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 4, 4, 2, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 4, 4, 2, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 8, 4, 2, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 9, 9, 6, 4, 2],
+            [0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 7, 8, 5, 8, 3, 0],
+            [0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 7, 9, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ]
 
-        self.smallInput = [
-            [0, 1, 0],
-            [1, 1, 1],
-            [0, 1, 0]
-        ]
+class TestInput(AbstractInput):
+    def __init__(self, dim):
+        AbstractInput.__init__(self, dim)
+        self.index = 0
+        self.coords = [[0,0], [2,2], [14,2], [2, 14], [14, 14], [15,15]]
 
-    def getPoints(self, useSmall=False):
-        notNullPoints = {}
-        for y, row in enumerate(self.input):
-            for x, value in enumerate(row):
-                if value > 0:
-                    notNullPoints[str(x) + ':' + str(y)] = Point(x, y, value)
-            
-        return notNullPoints
+    def getPointsSet(self):
+        y = 0
+        matrix = []
+        coord = self.coords[self.index]
+        while y < self.dim:
+            x = 0
+            line = []
+            while x < self.dim:
+                if coord[0] == x and coord[1] == y:
+                    line.append(50)
+                elif abs(coord[0] - x) < 3 and abs(coord[1] - y) < 3:
+                    line.append(25)
+                else:
+                    line.append(0)
+                x += 1
+            matrix.append(line)
+            y += 1
 
-    def getCoords(self):
-        points = []
-        for y, row in enumerate(self.input):
-            for x, value in enumerate(row):
-                if value > 0:
-                    points.append([x, y, value])
-            
-        return points
+        self.index += 1
+
+        return matrix
