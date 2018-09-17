@@ -64,39 +64,51 @@ class OutputMixSamples:
         for index, channel in enumerate(self.channels):
             channel.set_volume(volumes[index])
 
-# class OutputLedMatrix(SerialClass):
-#     def __init__(self, dim):
-#         self.dim = dim
-#         self.ser = self.getSerial('USB-SERIAL', 230400)   
+class OutputLedMatrix():
+    def __init__(self, dim):
+        self.dim = dim
+        self.ser = self.getSerial('USB-SERIAL', 230400)   
 
-#     def outputCluster(self, cluster):
-#         if False == isinstance(cluster, Cluster):
-#             return
+    def getSerial(self, name, baudRate):
+        ports = list(port_list.comports())
+        for port_no, description, address in ports:
+            print(port_no)
+            print(description)
+            print(address)
 
-#         self.printToSerial(self.generateMatrix(cluster))
+            if name in description:
+                return serial.Serial(port_no, baudRate)
 
-#     def printToSerial(self, matrix):
-#         self.ser.write(matrix)
+    def outputCluster(self, cluster):
+        if False == isinstance(cluster, Cluster):
+            return
+
+        self.printToSerial(self.generateMatrix(cluster))
+
+    def printToSerial(self, matrix):
+        self.ser.write(matrix)
     
-#     def generateMatrix(self, cluster):
-#         matrix = []
-#         while y < self.dim:
-#             line = []
-#             while x < self.dim:
-#                 line.append(self.getValue(x, y, cluster))
-#             matrix.append(line)
+    def generateMatrix(self, cluster):
+        matrix = []
+        while y < self.dim:
+            line = []
+            while x < self.dim:
+                line.append(self.getValue(x, y, cluster))
+            matrix.append(line)
 
-#         return matrix
+        return matrix
 
-#     def getValue(self, x, y, cluster):
-#         output = cluster.output()
-#         dist = ( (x - output['x'])**2 + (y - output['y'])**2 )**(1/2)
-#         if dist > output['radius']:
-#             return 0
+    def getValue(self, x, y, cluster):
+        output = cluster.output()
+        deltaX = x - output['x']
+        deltaY = y - output['y']
+        dist = ( deltaX**2 + deltaY**2 )**(1/2)
+        if dist > output['radius']:
+            return 0
 
-#         maxMultiplier = output['radius'] + 1
+        maxMultiplier = output['radius'] + 1
 
-#         return  output['maxValue'] * ( (maxMultiplier - dist) / maxMultiplier )
+        return  output['maxValue'] * ( (maxMultiplier - dist) / maxMultiplier )
 
 
 # MyOutput = OutputMixSamples([], 8)

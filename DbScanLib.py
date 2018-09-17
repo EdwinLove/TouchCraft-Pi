@@ -75,18 +75,33 @@ class DbScanLib:
 
             if '' != outputString:
                 print(outputString)
+    
+    def cluster(self):
+        clusters = self.filterClusters(self.convertToClusters(self.Input.getCoords()), 1)
+        if len(clusters) > 0:
+            for cluster in clusters:
+                print(cluster.output())
+
+    def clusterFake(self, inputArray):
+        self.Input.setInput(inputArray)
+        clusters = self.filterClusters(self.convertToClusters(self.Input.getCoords()))
+        if len(clusters) > 0:
+            for cluster in clusters:
+                print(cluster.output())
 
 #            time.sleep(0.2)
     
 Input = Input.InputFromSerial(16)
 #Input = Input.TestInput(16)
 #Input = Input.SimulatedInput()
-Output = Output.OutputMixSamples([
-    'sounds/birdsong.wav',
-    'sounds/bowls.wav',
-    'sounds/harp.wav',
-    'sounds/soul-clap.wav.wav'
-], 16)
+# Input = Input.PassedInput()
+# Output = Output.OutputMixSamples([
+#     'sounds/birdsong.wav',
+#     'sounds/bowls.wav',
+#     'sounds/harp.wav',
+#     'sounds/soul-clap.wav.wav'
+# ], 16)
 
-MyDbScanLib = DbScanLib(Input, [Output])
-MyDbScanLib.scan()
+MyDbScanLib = DbScanLib(Input, [])
+while True:
+    MyDbScanLib.cluster()
