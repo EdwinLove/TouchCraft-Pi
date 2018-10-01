@@ -1,0 +1,13 @@
+#N canvas 767 503 195 136 10;
+#X text 28 10 k.lb;
+#X text 28 20 ====;
+#X obj 30 50 loadbang;
+#X obj 100 50 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 30 72 outlet;
+#X text 116 51 k.lb;
+#X obj 100 29 r k.lb;
+#X connect 2 0 4 0;
+#X connect 3 0 4 0;
+#X connect 6 0 3 0;
+#X coords 0 -1 1 1 50 16 2 100 50;

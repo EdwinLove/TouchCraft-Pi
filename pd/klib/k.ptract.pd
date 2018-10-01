@@ -1,0 +1,76 @@
+#N canvas 629 575 1356 557 10;
+#X obj 276 210 lop~ 5;
+#X obj 276 190 sig~;
+#X obj 336 210 lop~ 5;
+#X obj 336 190 sig~;
+#X obj 396 210 lop~ 5;
+#X obj 396 190 sig~;
+#X obj 456 210 lop~ 5;
+#X obj 456 190 sig~;
+#X obj 516 210 lop~ 5;
+#X obj 516 190 sig~;
+#X text 914 269 /a/;
+#X text 914 299 /e/;
+#X text 914 329 /i/;
+#X text 914 359 /u/;
+#X text 914 389 /ng/;
+#X text 914 419 /m/;
+#X obj 216 210 lop~ 5;
+#X obj 216 190 sig~;
+#X obj 216 169 inlet w1;
+#X obj 276 169 inlet w2;
+#X obj 336 169 inlet w3;
+#X obj 396 169 inlet w4;
+#X obj 456 169 inlet w5;
+#X obj 516 169 inlet w6;
+#X obj 69 170 inlet~;
+#X obj 69 222 outlet~;
+#X text 34 14 Parametric vocal tract based on formant estimation/interpolation
+;
+#X text 34 35 =======================================;
+#X text 617 168 <<< set formant weightings;
+#X text 980 346 <<< interpolate formant settings based on weightings
+;
+#X obj 216 280 k.wManager;
+#X text 217 130 Formant weightings:;
+#X text 219 145 w1 - /e/ w2 - /i/ w3 - /u/ w4 - /ng/ w5 - /m/;
+#X obj 69 196 k.tractFilterBank~;
+#X obj 528 261 k.tractPointTC~ 650 1080 2650 2900 3250 1 0.5 0.45 0.42
+0.75 8.125 12 22 22 23;
+#X obj 528 291 k.tractPointTC~ 400 1700 2600 3200 3580 1 0.21 0.25
+0.21 0.01 5.74 21 26 26 23;
+#X obj 528 321 k.tractPointTC~ 290 1870 2800 3250 3540 1 0.22 0.13
+0.11 0.01 7.25 20 28 27 29;
+#X obj 528 351 k.tractPointTC~ 350 600 2700 2900 3300 1 0.12 0.135
+0.2 0.01 8.75 10 27 24 29;
+#X obj 528 381 k.tractPointTC~ 200 1080 2650 2900 3540 1 0.02 0.01
+0.005 0 7.25 20 28 27 29;
+#X obj 528 411 k.tractPointTC~ 200 1080 2650 2900 3540 1 0.02 0.01
+0.005 0 7.25 20 28 27 29;
+#X text 48 472 'krighxz' library // Copyright Christian Heinrichs;
+#X connect 0 0 30 0;
+#X connect 0 0 35 0;
+#X connect 1 0 0 0;
+#X connect 2 0 30 0;
+#X connect 2 0 36 0;
+#X connect 3 0 2 0;
+#X connect 4 0 30 0;
+#X connect 4 0 37 0;
+#X connect 5 0 4 0;
+#X connect 6 0 30 0;
+#X connect 6 0 38 0;
+#X connect 7 0 6 0;
+#X connect 8 0 30 0;
+#X connect 8 0 39 0;
+#X connect 9 0 8 0;
+#X connect 16 0 30 0;
+#X connect 16 0 34 0;
+#X connect 17 0 16 0;
+#X connect 18 0 17 0;
+#X connect 19 0 1 0;
+#X connect 20 0 3 0;
+#X connect 21 0 5 0;
+#X connect 22 0 7 0;
+#X connect 23 0 9 0;
+#X connect 24 0 33 0;
+#X connect 33 0 25 0;

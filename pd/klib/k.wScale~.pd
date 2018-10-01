@@ -1,0 +1,10 @@
+#N canvas 1461 485 210 130 10;
+#X obj 25 67 lop~ 5;
+#X obj 25 46 sig~;
+#X obj 25 89 outlet~;
+#X obj 74 89 throw~ _totalScale;
+#X obj 25 26 inlet;
+#X connect 0 0 2 0;
+#X connect 0 0 3 0;
+#X connect 1 0 0 0;
+#X connect 4 0 1 0;

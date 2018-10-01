@@ -1,0 +1,17 @@
+#N canvas 1215 487 383 164 10;
+#X obj 21 67 *~;
+#X obj 21 44 sig~ \$1;
+#X obj 21 89 *~;
+#X obj 75 45 inlet~;
+#X obj 21 111 outlet~;
+#X obj 48 67 r~ k_wScaleFactor;
+#X text 11 5 krighxz weighted point (requires instance of k.wManager)
+;
+#X text 11 15 ========================================================
+;
+#X text 40 140 'krighxz' library // Copyright Christian Heinrichs;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 2 0 4 0;
+#X connect 3 0 0 1;
+#X connect 5 0 2 1;

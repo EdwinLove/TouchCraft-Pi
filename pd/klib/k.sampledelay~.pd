@@ -1,0 +1,160 @@
+#N canvas 350 344 407 203 10;
+#X obj 17 -155 bang~;
+#X text 22 -179 Sample delay without using block~ object or send~/recieve~'s
+;
+#X text 319 -32 @krighxz;
+#N canvas 679 318 616 336 writeToBuffer 0;
+#X obj 176 -99 bang~;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-circBuf1 64 float 3;
+#A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+#X coords 0 1 63 -1 100 100 1 0 0;
+#X restore 12 -104 graph;
+#X obj 176 -29 t b b b;
+#X obj 215 6 f;
+#X obj 240 6 + 1;
+#X obj 222 145 pack f f;
+#X obj 240 31 % 64;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-circBuf2 1024 float 3;
+#A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+#A 1000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+#X coords 0 1 1024 -1 100 100 1 0 0;
+#X restore 11 29 graph;
+#X obj 267 104 +;
+#X obj 276 -53 f;
+#X obj 303 -53 + 64;
+#X obj 176 -77 t b b;
+#X obj 303 -19 % 1024;
+#X obj 240 58 t f f;
+#X text 175 -130 write 64 sample blocks into larger 1024 buffer;
+#X obj 398 30 % 1024;
+#X obj 398 5 + 1024;
+#X text 396 72 read pointer offset by 64 samples;
+#X obj 398 -20 - 64;
+#X obj 398 52 s \$0-readPtr;
+#X obj 282 82 r \$0-writePtr;
+#X obj 303 3 s \$0-writePtr;
+#X obj 222 169 tabwrite \$0-circBuf2;
+#X obj 137 104 tabread \$0-circBuf1;
+#N canvas 1120 237 149 150 tommygun 0;
+#X obj 23 -114 f;
+#X msg 106 -70 0;
+#X obj 49 -70 sel 1 0;
+#X obj 49 -114 + 1;
+#X msg 23 -136 0;
+#X obj 21 -70 - 1;
+#X obj 21 -48 outlet;
+#X obj 23 -157 inlet;
+#X obj 49 -91 < 64;
+#X connect 0 0 3 0;
+#X connect 1 0 0 1;
+#X connect 2 0 0 0;
+#X connect 2 1 1 0;
+#X connect 3 0 0 1;
+#X connect 3 0 5 0;
+#X connect 3 0 8 0;
+#X connect 4 0 0 0;
+#X connect 5 0 6 0;
+#X connect 7 0 4 0;
+#X connect 8 0 2 0;
+#X restore 176 -53 pd tommygun;
+#X connect 0 0 11 0;
+#X connect 2 2 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 3 1;
+#X connect 4 0 6 0;
+#X connect 5 0 22 0;
+#X connect 6 0 13 0;
+#X connect 8 0 5 1;
+#X connect 9 0 10 0;
+#X connect 10 0 9 1;
+#X connect 10 0 12 0;
+#X connect 10 0 18 0;
+#X connect 11 0 24 0;
+#X connect 11 1 9 0;
+#X connect 12 0 21 0;
+#X connect 13 0 23 0;
+#X connect 13 1 8 0;
+#X connect 15 0 19 0;
+#X connect 16 0 15 0;
+#X connect 18 0 16 0;
+#X connect 20 0 8 1;
+#X connect 23 0 5 0;
+#X connect 24 0 2 0;
+#X restore 56 -106 pd writeToBuffer;
+#N canvas 739 376 264 354 readFromBuffer 0;
+#X obj -232 107 phasor~;
+#X obj -232 84 /;
+#X obj -232 133 *~ 64;
+#X obj -232 205 +~ 1024;
+#X obj -232 233 /~ 1024;
+#X obj -232 176 +~;
+#X obj -232 253 wrap~;
+#X obj -232 273 *~ 1024;
+#X obj -232 318 outlet~;
+#X obj -232 40 samplerate~;
+#X obj -232 20 loadbang;
+#X msg -232 62 \$1 64;
+#X obj -158 20 r \$0-readPtr;
+#X obj -232 296 tabread~ \$0-circBuf2;
+#X obj -158 40 sig~;
+#X obj -158 159 -~;
+#X obj -143 135 clip~ 0 960;
+#X obj -143 111 inlet~ delayInSamples;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 2 0 5 0;
+#X connect 3 0 4 0;
+#X connect 4 0 6 0;
+#X connect 5 0 3 0;
+#X connect 6 0 7 0;
+#X connect 7 0 13 0;
+#X connect 9 0 11 0;
+#X connect 10 0 9 0;
+#X connect 11 0 1 0;
+#X connect 12 0 14 0;
+#X connect 13 0 8 0;
+#X connect 14 0 15 0;
+#X connect 15 0 5 1;
+#X connect 16 0 15 1;
+#X connect 17 0 16 0;
+#X restore 127 -52 pd readFromBuffer;
+#X obj 127 -75 inlet~ delayInSamples;
+#X obj 56 -155 inlet~ audioInput;
+#X obj 127 -29 outlet~;
+#X obj 56 -134 tabwrite~ \$0-circBuf1;
+#X connect 0 0 8 0;
+#X connect 4 0 7 0;
+#X connect 5 0 4 0;
+#X connect 6 0 8 0;

@@ -1,13 +1,14 @@
 import serial
 import serial.tools.list_ports as port_list
 from Objects import Point
+import sys
 
 class AbstractInput():
     def __init__(self, dim):
         self.dim = dim
-        self.touchThreshold = 10
+        self.touchThreshold = 10  # 10
 
-    def getPoints(self):
+    def getPoints(self): 
         points = {}
         for y, line in enumerate(self.getPointsSet()):
             for x, value in enumerate(line):
@@ -19,10 +20,11 @@ class AbstractInput():
     def getCoords(self):
         coords = []
         for y, line in enumerate(self.getPointsSet()):
-            for x, value in enumerate(line):
-                if value > self.touchThreshold:
-                    coords.append([x, y, value])
-
+            print(line) #CH
+            for x, value in enumerate(line): #CH
+                #if value > self.touchThreshold:
+                coords.append([x, y, value])
+        print("########") #CH
         return coords
 
 
@@ -44,16 +46,29 @@ class InputFromSerial(AbstractInput):
     def getPointsSet(self):
         lines = []
         while True:
-            line = self.ser.readline().decode().rstrip(';\r\n')
+            line = self.ser.readline() ###################################
+            sys.stdout.flush()
+#             print(list(line))
+#             newLine = list(filter(lambda x: x < 100, list(line)))
+#             print(newLine)
+# #            print(b''.join(newLine))
+#             #line = line.encode("windows-1252")
+#             #line = line.encode('utf-8').strip()
+#             print(line.decode('utf-8', 'ignore'))
+
+            line = line.decode('utf-8', 'ignore').rstrip(';\r\n')
+            # line = self.ser.readline().decode().rstrip(';\r\n')
             if '.' == line:
                 if len(lines) == self.dim:
                     return lines
-
                 lines = []
             else:
                 thisLine = []
                 for x, point in enumerate(line.split(',')):
-                    thisLine.append(self.cleanPoint(point))
+                    try:
+                        thisLine.append(self.cleanPoint(point))
+                    except ValueError:
+                        print('ooops')
 
                 if len(thisLine) == self.dim:
                     lines.append(thisLine)

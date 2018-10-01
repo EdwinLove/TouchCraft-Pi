@@ -1,0 +1,16 @@
+#N canvas 447 266 523 203 10;
+#X obj 22 60 sig~ 1;
+#X obj 22 109 /~;
+#X obj 22 131 clip~ 0 1;
+#X obj 37 84 inlet~ sumOfWeightings;
+#X text 18 21 scale down all weightings if sum of weightings exceeds
+1;
+#X text 18 31 ========================================================
+;
+#X obj 22 153 s~ k_wScaleFactor;
+#X text 138 153 <<< currently only one instance of k.wManager and associated
+objects is supported;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 0 6 0;
+#X connect 3 0 1 1;

@@ -1,0 +1,17 @@
+#N canvas 1009 316 136 241 10;
+#X text 25 24 k.pi;
+#X text 25 34 ====;
+#X msg 30 102 3.14159;
+#X obj 30 58 inlet;
+#X obj 30 186 outlet;
+#X obj 30 164 * 1;
+#X obj 62 121 f \$1;
+#X obj 62 143 sel 0;
+#X obj 30 80 t b b;
+#X connect 2 0 5 0;
+#X connect 3 0 8 0;
+#X connect 5 0 4 0;
+#X connect 6 0 7 0;
+#X connect 7 1 5 1;
+#X connect 8 0 2 0;
+#X connect 8 1 6 0;

@@ -1,0 +1,10 @@
+#N canvas 918 217 141 114 10;
+#X obj 54 57 snapshot~;
+#X obj 54 34 metro \$1;
+#X obj 54 11 loadbang;
+#X obj 5 33 inlet~;
+#X obj 54 78 outlet;
+#X connect 0 0 4 0;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 3 0 0 0;
