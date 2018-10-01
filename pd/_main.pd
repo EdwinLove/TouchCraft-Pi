@@ -1,4 +1,4 @@
-#N canvas 280 182 1342 612 10;
+#N canvas 27 341 1342 612 10;
 #N canvas 0 50 177 203 NOISE 0;
 #X obj 38 80 s~ resinput;
 #X obj 38 31 hv.pinknoise;
@@ -161,7 +161,7 @@
 #X obj 26 77 outlet~;
 #X connect 1 0 2 0;
 #X restore 364 378 pd RESONATORS;
-#N canvas 386 818 251 111 GRANULAR 0;
+#N canvas 386 777 251 133 GRANULAR 0;
 #X obj 24 62 r~ _samplerOut;
 #X obj 24 83 outlet~;
 #X obj 24 35 sampleGranulator;
@@ -304,9 +304,9 @@
 #N canvas 285 595 176 162 NOTE 0;
 #N canvas 57 478 518 307 noteMovement 0;
 #X obj 334 215 hsl 128 15 0 0.999 0 0 empty empty empty -2 -8 0 10
--262144 -1 -1 5643 1;
+-262144 -1 -1 0 1;
 #X obj 67 215 hsl 256 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 11320 1;
+-1 -1 0 1;
 #X obj 331 235 s _mvmt;
 #X obj 308 53 r _a2;
 #X obj 348 53 r _a3;
