@@ -1,4 +1,6 @@
 #N canvas 27 341 1342 612 10;
+#X declare -path klib;
+#X declare -path heavylib;
 #N canvas 0 50 177 203 NOISE 0;
 #X obj 38 80 s~ resinput;
 #X obj 38 31 hv.pinknoise;
@@ -6927,7 +6929,7 @@
 #X text 1227 95 .;
 #X text 1267 75 .;
 #X text 1297 65 .;
-#N canvas 648 820 352 143 TEST 0;
+#N canvas 1376 877 352 143 TEST 1;
 #X floatatom 24 40 5 0 0 0 - - -;
 #X obj 24 110 s totalPressure;
 #X floatatom 132 41 5 0 0 0 - - -;
@@ -7245,6 +7247,8 @@
 #X msg 114 483 0, f 1;
 #X obj 671 195 k.vu -3;
 #X msg 546 279 0, f 1;
+#X obj 1016 533 declare -path klib;
+#X obj 1016 553 declare -path heavylib;
 #X connect 0 0 7 0;
 #X connect 0 0 7 1;
 #X connect 1 0 91 0;
