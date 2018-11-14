@@ -7,7 +7,8 @@ from pythonosc import osc_bundle_builder
 from pythonosc import udp_client
  
 class Replay():
-    def __init__(self, fileName, ip, port):
+    def __init__(self, fileName, delay, ip, port):
+        self.delay = delay / 1000 if delay > 0 else 0
         self.file = open(fileName)
         self.client = udp_client.SimpleUDPClient(ip, port)
 
@@ -31,10 +32,11 @@ class Replay():
                 })
             except json.decoder.JSONDecodeError:
                 quit()
-            time.sleep(0.5)
+            time.sleep(self.delay)
 
 parser = argparse.ArgumentParser(description='Replay a recording.')
-parser.add_argument('file', type=str, help='the name of the file to replayr')
+parser.add_argument('file', type=str, help='The name of the file to replay')
+parser.add_argument('--delay', type=int, help='milliseconds delay between lines', default=500)
 args = parser.parse_args()
-replay = Replay(args.file, '127.0.0.1', 8833)
+replay = Replay(args.file, args.delay, '127.0.0.1', 8833)
 replay.pushToOsc()
