@@ -1,6 +1,8 @@
 import math
 import time
 
+runSpeedTest = False
+
 points_sim = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -119,26 +121,29 @@ def CCLBlob():
             blobPressures[key] /= blobSizes[key]
             blobSizes[key] /= float(width*height)
 
-    # print("--- SIMULATED POINTS")
-    # print(points_sim)
-    # print("######## RESULTS ########")
-    # print("--- LABELED POINTS")
-    # print(points_labeled)
-    # print("--- LABELS")
-    # print(labels)
-    # print("--- SIZES")
-    # print(blobSizes)
-    # print("--- POSITIONS")
-    # print(blobPositions)
-    # print("--- PRESSURES")
-    # print(blobPressures)
+    if not runSpeedTest:
+        print("--- SIMULATED POINTS")
+        print(points_sim)
+        print("######## RESULTS ########")
+        print("--- LABELED POINTS")
+        print(points_labeled)
+        print("--- LABELS")
+        print(labels)
+        print("--- SIZES")
+        print(blobSizes)
+        print("--- POSITIONS")
+        print(blobPositions)
+        print("--- PRESSURES")
+        print(blobPressures)
 
-while True:
-    then = time.time()
+if(runSpeedTest):
+    while True:
+        then = time.time()
+        CCLBlob()
+        processTimeInMs = (time.time() - then)*1000.0
+        print(str(processTimeInMs) + "ms")
+else:
     CCLBlob()
-    processTimeInMs = (time.time() - then)*1000.0
-    print(str(processTimeInMs) + "ms")
-
 
 
 
